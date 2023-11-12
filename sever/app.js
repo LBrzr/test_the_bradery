@@ -21,8 +21,10 @@ connectDb();
 // routers set up
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/authentication');
+const productRouter = require('./routes/product');
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/product', productRouter);
 
 module.exports = app;
