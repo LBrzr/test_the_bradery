@@ -4,7 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider, userAuth } from '../hooks/context/AuthContext';
 
 import Home from './home';
-import Login from './login';
+import Connection from './conection';
+
+import { values as Strings } from '../constants/strings';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +25,8 @@ export const Layout = () => {
     return (
         <Stack.Navigator>
             {
-                authState?.authenticated ? (<Stack.Screen name='Home' component={Home} />)
-                    : (<Stack.Screen name='Login' component={Login} />)
+                authState?.authenticated ? (<Stack.Screen name={Strings.home} component={Home} />)
+                    : (<Stack.Screen name={Strings.connection} component={Connection} />)
             }
         </Stack.Navigator>
     )
