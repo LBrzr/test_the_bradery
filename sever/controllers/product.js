@@ -2,7 +2,7 @@ const { ProductModel } = require('../models/product');
 
 const productListController = async (req, res) => {
     try {
-        const products = ProductModel.find();
+        const products = await ProductModel.find({});
         return res.status(200).json(products).end();
     } catch (error) {
         console.log(error);

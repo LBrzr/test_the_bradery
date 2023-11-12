@@ -4,7 +4,7 @@ const ProductSchema = new Schema({
     id: { type: Types.ObjectId },
     name: { type: String },
     price: { type: Number },
-    price: { type: Number },
+    inventory: { type: Number },
 });
 
 const ProductModel = model('Product', ProductSchema);
