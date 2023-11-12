@@ -6,4 +6,5 @@ export default {
   register: authBase + "register/",
   login: authBase + "login/",
   logout: authBase + "logout/",
+  me: authBase + "me/",
 };

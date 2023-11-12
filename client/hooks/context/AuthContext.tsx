@@ -2,7 +2,10 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { registerUser, logUserIn, logUserOut, loadToken } from '../../services/auth';
 
-interface AuthState { token: string | null, authenticated: boolean | null };
+interface AuthState {
+    user?: User,
+    authenticated?: boolean,
+};
 
 interface AuthProps<T> {
     authState?: AuthState;
@@ -20,10 +23,7 @@ export const userAuth = () => {
 }
 
 export const AuthProvider = ({ children }: any) => {
-    const [authState, setAuthState] = useState<AuthState>({
-        token: null,
-        authenticated: null,
-    });
+    const [authState, setAuthState] = useState<AuthState>({});
 
     useEffect(() => {
         loadToken().then(result => {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: any) => {
 
             } else {
                 setAuthState({
-                    token: result.token!,
+                    user: result.data!,
                     authenticated: true,
                 })
             }
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: any) => {
 
             } else {
                 setAuthState({
-                    token: result.token!,
+                    user: result.data!,
                     authenticated: true,
                 })
             }
@@ -61,10 +61,7 @@ export const AuthProvider = ({ children }: any) => {
             if (result.error) {
 
             } else {
-                setAuthState({
-                    token: null,
-                    authenticated: false,
-                })
+                setAuthState({ authenticated: false })
             }
             return { error: result.error, msg: result.msg };
         },

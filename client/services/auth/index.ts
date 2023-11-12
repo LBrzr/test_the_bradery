@@ -3,9 +3,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { api, keys, values } from "../../constants/strings";
 
-interface Result {
+interface Result<T> {
   error: boolean;
-  token?: string;
+  data?: T;
   msg?: string;
 }
 
@@ -13,7 +13,7 @@ interface Result {
 const registerUser = async (
   email: string,
   password: string
-): Promise<Result> => {
+): Promise<Result<string>> => {
   try {
     console.log("registering ...");
     const body = { email, password };
@@ -26,12 +26,16 @@ const registerUser = async (
 
 /// logs user in using provided [email] and [password]
 /// and saves received token in [SecureStorage]
-const logUserIn = async (email: string, password: string): Promise<Result> => {
+const logUserIn = async (
+  email: string,
+  password: string
+): Promise<Result<User>> => {
   try {
     console.log("loging in ...");
     const response = await axios.post(api.login, { email, password });
 
-    const token = response.data.authentication.token;
+    const data = response.data;
+    const token = data.authentication.token;
 
     // set gotten as default for all up coming requests
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -39,7 +43,7 @@ const logUserIn = async (email: string, password: string): Promise<Result> => {
     // save token
     await AsyncStorage.setItem(keys.token, token);
 
-    return { error: false, token };
+    return { error: false, data };
   } catch (e: any) {
     return { error: true, msg: values.wrongUsernameOrPwd };
   }
@@ -47,7 +51,7 @@ const logUserIn = async (email: string, password: string): Promise<Result> => {
 
 /// logs user out
 /// and deletes user's token and data stored in [SecureStorage]
-const logUserOut = async (): Promise<Result> => {
+const logUserOut = async (): Promise<Result<string>> => {
   try {
     console.log("loging out ...");
     await axios.post(api.logout);
@@ -66,16 +70,18 @@ const logUserOut = async (): Promise<Result> => {
 
 /// returns loged in user token if exists
 /// also sets it as default axios authorization
-const loadToken = async (): Promise<Result> => {
+const loadUser = async (): Promise<Result<User>> => {
   console.log("loading token ...");
   const token = await AsyncStorage.getItem(keys.token);
   console.log("token: ", token);
   if (token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    return { error: false, token };
+    const result = await axios.get(api.me);
+    const data = result.data;
+    return { error: false, data };
   } else {
     return { error: true, msg: values.noStoredToken };
   }
 };
 
-export { registerUser, logUserIn, logUserOut, loadToken };
+export { registerUser, logUserIn, logUserOut, loadUser as loadToken };

@@ -80,7 +80,7 @@ const meController = (req, res) => {
     try {
         // get user from req
         const { user } = req;
-        console.log(user.name, ' retrieved');
+        console.log(user.email, ' retrieved');
         // return authenticated user
         return res.json(user).end();
     } catch (error) {
