@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { api, keys } from "../../constants/strings";
 
@@ -34,7 +34,7 @@ const logUserIn = async (email: string, password: string): Promise<Result> => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     // save token
-    await SecureStore.setItemAsync(keys.token, token);
+    await AsyncStorage.setItem(keys.token, token);
 
     return { error: false, token };
   } catch (e: any) {
@@ -52,7 +52,7 @@ const logUserOut = async (): Promise<Result> => {
     axios.defaults.headers.common["Authorization"] = "";
 
     // remove token
-    await SecureStore.deleteItemAsync(keys.token);
+    await AsyncStorage.removeItem(keys.token);
 
     return { error: false };
   } catch (e: any) {
@@ -63,7 +63,7 @@ const logUserOut = async (): Promise<Result> => {
 /// returns loged in user token if exists
 /// also sets it as default axios authorization
 const loadToken = async (): Promise<Result> => {
-  const token = await SecureStore.getItemAsync(keys.token);
+  const token = await AsyncStorage.getItem(keys.token);
   if (token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     return { error: false, token };
