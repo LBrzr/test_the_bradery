@@ -3,6 +3,7 @@ const { hashPassword, generateSalt } = require('../helpers');
 
 const registerController = async (req, res) => {
     try {
+        print(req.body);
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
             return res.status(400).json({ message: 'Please enter all fields' });

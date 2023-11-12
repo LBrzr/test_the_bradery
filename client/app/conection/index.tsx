@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import TextField from '../../components/textField'
-import Styles from '../../constants/Styles'
 import { View, Text } from '../../components/Themed'
 import { values as Strings } from '../../constants/strings'
-import Spacer from '../../components/Spacer'
-import FlatButton from '../../components/FlatButton'
 import { userAuth } from '../../hooks/context/AuthContext'
+import Styles from '../../constants/Styles'
+import TextField from '../../components/textField'
+import Spacer from '../../components/Spacer'
+import { FlatButton } from '../../components/button'
 
 
 export default function Connection() {
@@ -16,10 +16,7 @@ export default function Connection() {
     const login = async () => {
         if (onLogin)
             return onLogin(email, pwd).then((result) => {
-                if (result) {
-                    const [error, msg] = result;
-                    if (error) alert(msg);
-                }
+                if (result && result.error) alert(result.msg);
             });
     }
 
@@ -27,7 +24,7 @@ export default function Connection() {
         if (onRegister)
             return onRegister(email, pwd).then((result) => {
                 if (result) {
-                    const [error, msg] = result;
+                    const { error, msg } = result;
                     if (error) alert(msg);
                     else login();
                 }

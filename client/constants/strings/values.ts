@@ -3,7 +3,8 @@ export default {
   email: "Email",
   password: "Password",
   home: "Accueil",
-  connect: "Connecter",
+  connect: "Se connecter",
+  logout: "Se déconnecter",
   connection: "Connexion",
   register: "Créer un compte",
 };

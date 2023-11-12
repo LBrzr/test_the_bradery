@@ -11,7 +11,9 @@ interface AuthProps<T> {
     onLogout?: () => Promise<any>;
 }
 
-const AuthContext = createContext<AuthProps<[boolean, string]>>({});
+interface AuthResult { error: boolean, msg?: string }
+
+const AuthContext = createContext<AuthProps<AuthResult>>({});
 
 export const userAuth = () => {
     return useContext(AuthContext);
@@ -36,11 +38,11 @@ export const AuthProvider = ({ children }: any) => {
         });
     },)
 
-    const value: AuthProps<[boolean, string]> = {
+    const value: AuthProps<AuthResult> = {
         authState,
         onRegister: async (email: string, password: string) => {
             const result = await registerUser(email, password);
-            return [result.error, result.msg ?? ''];
+            return { error: result.error, msg: result.msg };
         },
         onLogin: async (email: string, password: string) => {
             const result = await logUserIn(email, password);
@@ -52,7 +54,7 @@ export const AuthProvider = ({ children }: any) => {
                     authenticated: true,
                 })
             }
-            return [result.error, result.msg ?? ''];
+            return { error: result.error, msg: result.msg };
         },
         onLogout: async () => {
             const result = await logUserOut();

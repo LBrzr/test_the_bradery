@@ -1,10 +1,12 @@
 import { StyleSheet } from "react-native";
-import Colors from "./Colors";
+import _Colors from "./Colors";
+
+const Colors = _Colors.light;
 
 export default StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.background,
   },
 
   center: {
@@ -23,7 +25,7 @@ export default StyleSheet.create({
   // bkgr colors
 
   container: {
-    backgroundColor: Colors.light.containerBackground,
+    backgroundColor: Colors.containerBackground,
   },
 
   transparent: {
@@ -66,12 +68,12 @@ export default StyleSheet.create({
 
   input: {
     padding: 10,
-    backgroundColor: Colors.light.inputBackground,
+    backgroundColor: Colors.inputBackground,
   },
 
   title: {
     textAlign: "center",
-    color: Colors.light.text,
+    color: Colors.text,
     fontWeight: "bold",
     fontSize: 30,
   },
@@ -79,7 +81,7 @@ export default StyleSheet.create({
   // button
 
   flatButton: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: Colors.primary,
     padding: 10,
     borderRadius: 5,
   },
@@ -88,5 +90,19 @@ export default StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: "white",
+  },
+
+  outlinedButton: {
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 5,
+    borderColor: Colors.primary,
+    borderWidth: 1,
+  },
+
+  outlinedButtonText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: Colors.primary,
   },
 });

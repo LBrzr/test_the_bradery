@@ -1,21 +1,21 @@
 import { Text, Pressable } from 'react-native'
 import React from 'react'
-import Styles from '../constants/Styles';
+import Styles from '../../constants/Styles';
 
-interface FlatButtonProps {
+interface OutlinedButtonProps {
     text: string,
     onTap: () => Promise<any>,
     expanded?: boolean,
 }
 
-export default function FlatButton(props: FlatButtonProps) {
+export default function (props: OutlinedButtonProps) {
     const { text, onTap, expanded = false } = props;
     return (
         <Pressable style={[
-            Styles.flatButton,
+            Styles.outlinedButton,
             expanded ? { flex: 1 } : {},
         ]} onPress={onTap}>
-            <Text style={Styles.flatButtonText}>{text}</Text>
+            <Text style={Styles.outlinedButtonText}>{text}</Text>
         </Pressable>
     )
 }
