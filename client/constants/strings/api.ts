@@ -1,4 +1,4 @@
-const base = "http/localhost:8088/";
+const base = "http://localhost:8088/";
 const authBase = base + "auth/";
 
 export default {

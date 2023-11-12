@@ -14,7 +14,7 @@ export default function TextField(props: TextFieldProps) {
     const { label, onChanged, hint, required, hide = false } = props;
     return (
         <View style={Styles.transparent}>
-            {label ? (<Text>{label}</Text>) : ''}
+            {label ? <Text>{label}</Text> : <View />}
             <TextInput
                 style={[Styles.input]}
                 placeholder={hint}

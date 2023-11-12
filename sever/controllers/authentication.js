@@ -3,9 +3,8 @@ const { hashPassword, generateSalt } = require('../helpers');
 
 const registerController = async (req, res) => {
     try {
-        print(req.body);
         const { name, email, password } = req.body;
-        if (!name || !email || !password) {
+        if (!email || !password) {
             return res.status(400).json({ message: 'Please enter all fields' });
         }
         // Check for existing user
@@ -27,6 +26,20 @@ const registerController = async (req, res) => {
         // Save user
         const savedUser = await user.save();
         return res.status(200).json(savedUser).end();
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+}
+
+const logoutController = async (req, res) => {
+    try {
+        // get user
+        const user = req.user;
+        // erase authentication
+        user.authentication.token = null;
+        await user.save();
+        return res.status(200).json({ state: true, message: "Logout succeeded !" }).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
@@ -56,8 +69,6 @@ const loginController = async (req, res) => {
         const salt = generateSalt();
         existingUser.authentication.token = hashPassword(salt, existingUser._id.toString());
         await existingUser.save();
-        // Set cookie with token
-        res.cookie('token', existingUser.authentication.token, { domain: 'localhost', path: '/' });
         return res.status(200).json(existingUser).end();
     } catch (error) {
         console.log(error);
@@ -80,6 +91,7 @@ const meController = (req, res) => {
 
 module.exports = {
     registerController,
+    logoutController,
     loginController,
     meController,
 };

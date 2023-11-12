@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: any) => {
                 })
             }
         });
-    },)
+    }, []);
 
     const value: AuthProps<AuthResult> = {
         authState,
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: any) => {
                     authenticated: false,
                 })
             }
-            return [result.error, result.msg ?? ''];
+            return { error: result.error, msg: result.msg };
         },
     };
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { api, keys } from "../../constants/strings";
+import { api, keys, values } from "../../constants/strings";
 
 interface Result {
   error: boolean;
@@ -15,10 +15,12 @@ const registerUser = async (
   password: string
 ): Promise<Result> => {
   try {
-    await axios.post(api.register, { email, password });
-    return { error: false };
+    console.log("registering ...");
+    const body = { email, password };
+    const result = await axios.post(api.register, body);
+    return result.status ? { error: false } : { error: true, msg: "Error " };
   } catch (e: any) {
-    return { error: true, msg: e.response.data.msg };
+    return { error: true, msg: values.connectionFailed };
   }
 };
 
@@ -26,9 +28,10 @@ const registerUser = async (
 /// and saves received token in [SecureStorage]
 const logUserIn = async (email: string, password: string): Promise<Result> => {
   try {
-    const response = await axios.post(api.register, { email, password });
+    console.log("loging in ...");
+    const response = await axios.post(api.login, { email, password });
 
-    const token = response.data.token;
+    const token = response.data.authentication.token;
 
     // set gotten as default for all up coming requests
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -38,7 +41,7 @@ const logUserIn = async (email: string, password: string): Promise<Result> => {
 
     return { error: false, token };
   } catch (e: any) {
-    return { error: true, msg: e.response.data.msg };
+    return { error: true, msg: values.wrongUsernameOrPwd };
   }
 };
 
@@ -46,6 +49,7 @@ const logUserIn = async (email: string, password: string): Promise<Result> => {
 /// and deletes user's token and data stored in [SecureStorage]
 const logUserOut = async (): Promise<Result> => {
   try {
+    console.log("loging out ...");
     await axios.post(api.logout);
 
     // undo axios default configs
@@ -63,12 +67,14 @@ const logUserOut = async (): Promise<Result> => {
 /// returns loged in user token if exists
 /// also sets it as default axios authorization
 const loadToken = async (): Promise<Result> => {
+  console.log("loading token ...");
   const token = await AsyncStorage.getItem(keys.token);
+  console.log("token: ", token);
   if (token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     return { error: false, token };
   } else {
-    return { error: true, msg: "No stored token !" };
+    return { error: true, msg: values.noStoredToken };
   }
 };
 

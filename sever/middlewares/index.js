@@ -1,15 +1,15 @@
 const { merge } = require('lodash');
 
-const User = require('../models/user');
+const { UserModel } = require('../models/user');
 
 const isAuthenticated = async (req, res, next) => {
     try {
-        const { token } = req.cookies
+        const [type, token] = req.headers.authorization.split(' ');
         console.log(token);
         if (!token) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
-        const user = await User.findOne({ 'authentication.token': token });
+        const user = await UserModel.findOne({ 'authentication.token': token });
         if (!user) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
