@@ -40,7 +40,7 @@ export default function Connection() {
                 Styles.rounded,
                 Styles.padding,
             ]}>
-                <Text style={Styles.title}>{Strings.connection}</Text>
+                <Text style={Styles.titleText}>{Strings.connection}</Text>
                 <Spacer />
                 <View style={Styles.transparent}>
                     <TextField onChanged={setEmail} hint={Strings.email} />

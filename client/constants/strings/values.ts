@@ -10,4 +10,5 @@ export default {
   noStoredToken: "No stored token !",
   wrongUsernameOrPwd: "Email ou Mot de passe invalide !",
   connectionFailed: "Echec de connexion !",
+  welcomeBack: "Bienvenu ",
 };

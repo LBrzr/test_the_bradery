@@ -49,6 +49,7 @@ export default StyleSheet.create({
   // orentations
 
   row: {
+    alignItems: "baseline",
     flexDirection: "row",
   },
 
@@ -71,11 +72,16 @@ export default StyleSheet.create({
     backgroundColor: Colors.inputBackground,
   },
 
-  title: {
-    textAlign: "center",
+  titleText: {
     color: Colors.text,
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 20,
+  },
+
+  subtitleText: {
+    fontWeight: "bold",
+    color: Colors.text,
+    fontSize: 15,
   },
 
   // button

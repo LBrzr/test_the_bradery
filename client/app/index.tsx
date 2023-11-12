@@ -8,8 +8,9 @@ import Connection from './conection';
 
 import { values as Strings } from '../constants/strings';
 import { OutlinedButton } from '../components/button';
-import { View } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 import Styles from '../constants/Styles';
+import Spacer from '../components/Spacer';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,13 +33,23 @@ export const Layout = () => {
                     <Stack.Screen
                         name={Strings.home} component={Home}
                         options={{
-                            headerRight: () => <View style={[Styles.padding, Styles.transparent]}>
-                                <OutlinedButton
-                                    text={Strings.logout}
-                                    onTap={async () => {
-                                        if (onLogout) onLogout();
-                                    }} />
-                            </View>
+                            headerRight: () => (
+                                <View style={[
+                                    Styles.padding,
+                                    Styles.transparent,
+                                    Styles.row,
+                                ]}>
+                                    <Text style={[Styles.subtitleText, Styles.center]}>
+                                        {authState.user!.email}
+                                    </Text>
+                                    <Spacer />
+                                    <OutlinedButton
+                                        text={Strings.logout}
+                                        onTap={async () => {
+                                            if (onLogout) onLogout();
+                                        }} />
+                                </View>
+                            )
                         }}
                     />
                 )
