@@ -11,4 +11,5 @@ export default {
   wrongUsernameOrPwd: "Email ou Mot de passe invalide !",
   connectionFailed: "Echec de connexion !",
   welcomeBack: "Bienvenu ",
+  currency: " €",
 };

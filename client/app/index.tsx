@@ -11,6 +11,7 @@ import { OutlinedButton } from '../components/button';
 import { Text, View } from '../components/Themed';
 import Styles from '../constants/Styles';
 import Spacer from '../components/Spacer';
+import Colors from '../constants/Colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,9 @@ export const Layout = () => {
                     <Stack.Screen
                         name={Strings.home} component={Home}
                         options={{
+                            headerStyle: {
+                                backgroundColor: Colors.light.containerBackground,
+                            },
                             headerRight: () => (
                                 <View style={[
                                     Styles.padding,

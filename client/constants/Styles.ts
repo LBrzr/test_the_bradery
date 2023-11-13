@@ -53,6 +53,11 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
 
+  column: {
+    alignItems: "baseline",
+    flexDirection: "column",
+  },
+
   // box sizes
 
   boxSizeBig: {
