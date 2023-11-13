@@ -15,6 +15,6 @@ export default function Home() {
         });
     }, []);
     return (
-        <StaggeredList items={products} builder={(prod) => <ProductTile product={prod} />} />
+        <StaggeredList items={products} builder={(prod) => <ProductTile key={prod._id} product={prod} />} />
     )
 }

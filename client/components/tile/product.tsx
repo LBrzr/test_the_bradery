@@ -1,11 +1,11 @@
-import { Text, Pressable, View, ImageBackground, ImageBackgroundComponent } from 'react-native'
+import { ImageBackground } from 'react-native'
 import React from 'react'
 import Styles from '../../constants/Styles';
+import { Text, View } from '../../components/Themed';
 import { values as Strings } from '../../constants/strings';
+import { OutlinedButton } from '../button';
 
-interface ProductTileProps {
-    product: Product,
-}
+interface ProductTileProps { product: Product }
 
 export default function ProductTile(props: ProductTileProps) {
     const { product } = props;
@@ -13,9 +13,27 @@ export default function ProductTile(props: ProductTileProps) {
         <ImageBackground
             style={{ height: '100%', width: '100%' }}
             resizeMode="cover"
-            source={{ uri: 'https://en.thebradery.com/cdn/shop/products/sac-speedy30-louisvuitton-2303-74-LOUIS_VUITTON-vintega-seconde-main-luxe-maroquinerie-occasion_003_900x.jpg?v=1683206086' }}>
-            <Text>{product.name}</Text>
-            <Text>{product.price + Strings.currency}</Text>
+            source={{ uri: product.image }}>
+            <View style={[Styles.page, Styles.transparent, { flex: 1 }]}>
+                <View style={[
+                    Styles.transparent,
+                    Styles.row,
+                    Styles.alignHEnd,
+                    Styles.alignVCenter,
+                    Styles.padding,
+                ]}>
+                    <View style={[
+                        Styles.transparent,
+                        Styles.column,
+                        Styles.alignVEnd,
+                        { paddingEnd: 10 }
+                    ]}>
+                        <Text style={Styles.subtitleText}>{product.name}</Text>
+                        <Text>{product.price + Strings.currency}</Text>
+                    </View>
+                    <OutlinedButton active={product.inventory > 0} text={Strings.addToCart} onTap={async () => { }} />
+                </View>
+            </View>
         </ImageBackground>
     )
 }

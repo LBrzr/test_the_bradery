@@ -58,6 +58,22 @@ export default StyleSheet.create({
     flexDirection: "column",
   },
 
+  spaceBetween: {
+    justifyContent: "space-between",
+  },
+
+  alignHEnd: {
+    justifyContent: "flex-end",
+  },
+
+  alignVEnd: {
+    alignItems: "flex-end",
+  },
+
+  alignVCenter: {
+    alignItems: "center",
+  },
+
   // box sizes
 
   boxSizeBig: {
@@ -115,5 +131,13 @@ export default StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: Colors.primary,
+  },
+
+  disabledButton: {
+    backgroundColor: Colors.background,
+    padding: 10,
+    borderRadius: 5,
+    borderColor: "grey",
+    borderWidth: 0.5,
   },
 });

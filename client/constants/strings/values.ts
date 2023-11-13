@@ -12,4 +12,5 @@ export default {
   connectionFailed: "Echec de connexion !",
   welcomeBack: "Bienvenu ",
   currency: " €",
+  addToCart: "Ajouter au panier",
 };

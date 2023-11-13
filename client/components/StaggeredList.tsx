@@ -11,16 +11,18 @@ interface StaggeredListProps<T> {
 
 export default function StaggeredList<T>(props: StaggeredListProps<T>) {
     const { builder, items } = props;
+    var index = -1;
     return (
         <ScrollView style={[Styles.page, Styles.container]}>
             {chunkArray(items, 3).map(chunk => {
                 const [item0, item1, item2] = chunk;
-                return <View style={[
-                    Styles.container,
-                    { paddingBottom: 10, flexDirection: 'row', height: 500 }
-                ]}>
+                return <View key={index++}
+                    style={[
+                        Styles.container,
+                        { paddingBottom: 10, flexDirection: 'row', height: '50%' }
+                    ]}>
                     <View style={[Styles.container, { height: '100%', width: '50%' }]}>
-                        {builder(item0)}
+                        <View style={{ height: '100%', width: '100%' }}>{builder(item0)}</View>
                     </View>
                     <Spacer />
                     <View style={[
@@ -31,10 +33,11 @@ export default function StaggeredList<T>(props: StaggeredListProps<T>) {
                             paddingBottom: 10,
                         }]}>
                         <View style={{ height: '50%' }}>{builder(item1)}</View>
+
                         {
                             item2 ? [
-                                <Spacer />,
-                                <View style={{ height: '50%' }}>
+                                <Spacer key={`spacer${index}`} />,
+                                <View key={`view${index}`} style={{ height: '50%' }}>
                                     {builder(item2)}
                                 </View>
                             ]
