@@ -32,7 +32,7 @@ export const Layout = () => {
             {
                 authState?.authenticated ? (
                     <Stack.Screen
-                        name={Strings.home} component={Home}
+                        name={Strings.appName} component={Home}
                         options={{
                             headerStyle: {
                                 backgroundColor: Colors.light.containerBackground,
