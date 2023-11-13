@@ -112,20 +112,31 @@ const validateCartController = async (req, res) => {
     try {
         const cart = await getUserCart(req.user);
         const cartData = await getComplete(cart);
+        var messages = [];
         if (cartData.lines.length > 0) {
-            const order = OrderModel.create({
-                user: cart.user,
-                lines: cartData.lines.map(line => {
-                    return {
+            const oLines = [];
+            cartData.lines.forEach(line => {
+                if (line.product.inventory <= line.count) {
+                    oLines.push({
                         product: line.product._id,
                         count: line.count,
                         subTotal: line.product.price * line.count,
-                    };
-                })
+                    });
+                    ProductModel.findOneAndUpdate({ _id: line.product._id }, { inventory: line.product.inventory - line.count });
+                } else {
+                    messages.push({
+                        product: line.product,
+                        content: "out of inventory !",
+                    });
+                }
+            })
+            const order = OrderModel.create({
+                user: cart.user,
+                lines: oLines,
             });
             cart.lines = [];
             await cart.save();
-            return res.status(200).json({ cart: await getComplete(cart), order }).end();
+            return res.status(200).json({ cart: await getComplete(cart), order, messages }).end();
         }
         return res.status(400);
     } catch (error) {
