@@ -22,9 +22,11 @@ connectDb();
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/authentication');
 const productRouter = require('./routes/product');
+const cartRouter = require('./routes/cart');
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/product', productRouter);
+app.use('/cart', cartRouter);
 
 module.exports = app;
