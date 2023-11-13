@@ -10,6 +10,7 @@ export default {
   logout: authBase + "logout/",
   me: authBase + "me/",
   products: productBase + "list/",
+  order: cartBase + "validate/",
   cart: cartBase,
   addToCart: cartBase + "add/",
   removeFromCart: cartBase + "remove/product/",

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { addToCart, emptyCart, loadCart, removeFromCart } from '../../services/cart';
+import { addToCart, emptyCart, loadCart, removeFromCart, placeOrder } from '../../services/cart';
 import Cart from '../../types/cart';
 
 
@@ -10,6 +10,7 @@ interface CartProps {
     onRemoveFromCart?: (product: Product) => Promise<any>;
     onEmptyCart?: () => Promise<any>;
     onRefreshCart?: () => Promise<any>;
+    onPlaceOrder?: () => Promise<any>;
 }
 
 const CartContext = createContext<CartProps>({});
@@ -65,6 +66,7 @@ export const CartProvider = ({ children }: any) => {
             }
         },
         onRefreshCart: async () => onRefreshCart(),
+        onPlaceOrder: placeOrder,
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>

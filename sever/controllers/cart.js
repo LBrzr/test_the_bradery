@@ -1,5 +1,6 @@
 const { CartModel } = require('../models/cart');
 const { OrderModel } = require('../models/order');
+const { ProductModel } = require('../models/product');
 
 const getUserCart = async (user) => {
     var cart = await CartModel.findOne({ user });
@@ -9,10 +10,29 @@ const getUserCart = async (user) => {
     return cart;
 }
 
+const getComplete = async (cart) => {
+    return {
+        _id: cart._id,
+        user: cart.user,
+        lines: await Promise.all(cart.lines.map(async line => {
+            const prod = await ProductModel.findOne({ _id: line.product });
+            return {
+                product: {
+                    _id: prod._id,
+                    name: prod.name,
+                    image: prod.image,
+                    price: prod.price,
+                },
+                count: line.count,
+            };
+        })),
+    };
+}
+
 const cartController = async (req, res) => {
     try {
         const cart = await getUserCart(req.user);
-        return res.status(200).json(cart).end();
+        return res.status(200).json(await getComplete(cart)).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
@@ -37,7 +57,7 @@ const addToCartController = async (req, res) => {
             cart.lines.push({ product, count: 1 });
         }
         await cart.save();
-        return res.status(200).json(cart).end();
+        return res.status(200).json(await getComplete(cart)).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
@@ -56,7 +76,7 @@ const changeProductCountFromCartController = async (req, res) => {
             }
         }
         await cart.save();
-        return res.status(200).json(cart).end();
+        return res.status(200).json(await getComplete(cart)).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
@@ -81,7 +101,7 @@ const emptyCartController = async (req, res) => {
         const cart = await getUserCart(req.user);
         cart.lines = [];
         await cart.save();
-        return res.status(200).json(cart).end();
+        return res.status(200).json(await getComplete(cart)).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
@@ -91,12 +111,13 @@ const emptyCartController = async (req, res) => {
 const validateCartController = async (req, res) => {
     try {
         const cart = await getUserCart(req.user);
-        if (cart.lines.length > 0) {
+        const cartData = await getComplete(cart);
+        if (cartData.lines.length > 0) {
             const order = OrderModel.create({
                 user: cart.user,
-                lines: cart.lines.map(line => {
+                lines: cartData.lines.map(line => {
                     return {
-                        product: line.product,
+                        product: line.product._id,
                         count: line.count,
                         subTotal: line.product.price * line.count,
                     };
@@ -104,7 +125,7 @@ const validateCartController = async (req, res) => {
             });
             cart.lines = [];
             await cart.save();
-            return res.status(200).json({ cart, order }).end();
+            return res.status(200).json({ cart: await getComplete(cart), order }).end();
         }
         return res.status(400);
     } catch (error) {

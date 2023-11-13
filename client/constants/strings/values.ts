@@ -14,4 +14,5 @@ export default {
   currency: " €",
   addToCart: "Ajouter au panier",
   cart: "Panier",
+  pay: "Passer commande",
 };

@@ -1,7 +1,7 @@
-import { Image, View } from 'react-native'
+import { Image } from 'react-native'
 import React from 'react'
 import Styles from '../../constants/Styles';
-import { Text } from '../../components/Themed';
+import { Text, View } from '../../components/Themed';
 import { values as Strings } from '../../constants/strings';
 import { OutlinedButton } from '../button';
 import { CartLine } from '../../types/cart';
@@ -14,11 +14,11 @@ interface CartLineTileProps {
 export default function CartLineTile(props: CartLineTileProps) {
     const { line } = props;
     const { count, product } = line;
+
     return (
         <View
             style={[
                 Styles.container,
-                // Styles.row,
             ]}>
             <Image source={{ uri: product.image }} style={{ height: 100, width: 100 }} />
             <Spacer />

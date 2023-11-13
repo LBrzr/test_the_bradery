@@ -14,6 +14,7 @@ import Colors from '../constants/Colors';
 import { CartProvider } from '../hooks/context/CartContext';
 import Cart from './cart';
 import { Pressable } from 'react-native';
+import { PlaceOrderButton } from '../components/button/placeOrder';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,7 +68,19 @@ export const AppLayout = () => {
                         }} />
                     : <Stack.Screen name={Strings.connection} component={Connection} />
             }
-            <Stack.Screen name={Strings.cart} component={Cart} />
+            <Stack.Screen name={Strings.cart} component={Cart} options={{
+                headerStyle: {
+                    backgroundColor: Colors.light.containerBackground,
+                },
+                headerRight: ({ }) => (
+                    <View style={[
+                        Styles.padding,
+                        Styles.transparent,
+                    ]}>
+                        <PlaceOrderButton />
+                    </View>
+                )
+            }} />
         </Stack.Navigator>
     )
 };

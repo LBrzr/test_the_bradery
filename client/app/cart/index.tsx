@@ -14,15 +14,12 @@ import { ScrollView } from 'react-native-gesture-handler'
 export default function Cart() {
     const { authState } = userAuth();
     const { cart, onRefreshCart } = useCart();
-    console.log(cart, ": 5555555555555555555");
     if (authState?.authenticated && !cart) {
         onRefreshCart!();
     }
     return (
-        <ScrollView style={[{ height: '100%', width: '100%' }]}>
+        <ScrollView style={{}}>
             {cart?.lines.map(line => {
-
-                console.log(line)
                 return <CartLineTile key={line.product._id} line={line} />;
             }
             )}

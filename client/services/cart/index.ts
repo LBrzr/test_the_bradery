@@ -55,6 +55,23 @@ const emptyCart = async (): Promise<Result<Cart>> => {
   }
 };
 
+/// place order
+const placeOrder = async (): Promise<Result<Cart>> => {
+  try {
+    console.log("placing order ...");
+    const result = await axios.post(api.order);
+    const { cart: cartData, order: orderData } = result.data;
+    const cart = new Cart(cartData._id, cartData.lines);
+    console.log(cart, ": cart");
+    console.log(orderData, ": order");
+    return result.status
+      ? { error: false, data: cart }
+      : { error: true, msg: "Error " };
+  } catch (e: any) {
+    return { error: true, msg: values.connectionFailed };
+  }
+};
+
 /// fetch user cart
 const loadCart = async (): Promise<Result<Cart>> => {
   try {
@@ -70,4 +87,4 @@ const loadCart = async (): Promise<Result<Cart>> => {
   }
 };
 
-export { addToCart, emptyCart, loadCart, removeFromCart };
+export { addToCart, emptyCart, loadCart, removeFromCart, placeOrder };
