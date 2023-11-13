@@ -1,0 +1,2 @@
+{"_id":{"$oid":"65521e35465bd849666c1b9a"},"user":{"$oid":"65513e65c11c2507b17ef498"},"lines":[],"__v":30}
+{"_id":{"$oid":"655256ac237b143d348bee6b"},"user":{"$oid":"65513cc2ac2046f6ff53960c"},"lines":[{"product":{"$oid":"655155bb99c37a5d70a73ec0"},"count":1,"_id":{"$oid":"65525737237b143d348bee7f"}}],"__v":1}
