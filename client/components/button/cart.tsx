@@ -1,14 +1,20 @@
 import { Text } from 'react-native'
 import React from 'react'
 import Styles from '../../constants/Styles';
-import { useCart } from '../../hooks/context/CartContext';
 import { View } from '../Themed';
 import { Feather } from '@expo/vector-icons';
+import { useCart } from '../../hooks/context/CartContext';
 import { userAuth } from '../../hooks/context/AuthContext';
 
-export default function () {
-    const { authState } = userAuth();
+const Cart = () => {
+    return (<CartLayout />)
+};
+
+export default Cart;
+
+export const CartLayout = () => {
     const { cart, onRefreshCart } = useCart();
+    const { authState } = userAuth();
     if (authState?.authenticated && !cart) {
         onRefreshCart!();
     }
@@ -22,6 +28,6 @@ export default function () {
                     </Text>
                     : <View style={{ margin: 2 }} />
             }
-        </View>)
+        </View >)
         : <View />;
 }

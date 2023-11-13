@@ -1,4 +1,4 @@
-interface CartLine {
+export interface CartLine {
   product: Product;
   count: number;
 }

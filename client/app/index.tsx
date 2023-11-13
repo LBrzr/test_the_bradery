@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider, userAuth } from '../hooks/context/AuthContext';
 
@@ -7,12 +6,14 @@ import Home from './home';
 import Connection from './conection';
 
 import { values as Strings } from '../constants/strings';
-import { CartButton, OutlinedButton } from '../components/button';
+import { OutlinedButton } from '../components/button';
 import { Text, View } from '../components/Themed';
 import Styles from '../constants/Styles';
 import Spacer from '../components/Spacer';
 import Colors from '../constants/Colors';
-import { CartProvider, useCart } from '../hooks/context/CartContext';
+import { CartProvider } from '../hooks/context/CartContext';
+import Cart from './cart';
+import { Pressable } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,25 +34,28 @@ export const AppLayout = () => {
     return (
         <Stack.Navigator>
             {
-                authState?.authenticated ? (
-                    <Stack.Screen
+                authState?.authenticated
+                    ? <Stack.Screen
                         name={Strings.appName} component={Home}
                         options={{
-                            // headerShown: false,
                             headerStyle: {
                                 backgroundColor: Colors.light.containerBackground,
                             },
-                            headerRight: () => (
+                            headerRight: ({ }) => (
                                 <View style={[
                                     Styles.padding,
                                     Styles.transparent,
                                     Styles.row,
                                 ]}>
                                     <Text style={[Styles.subtitleText, Styles.center]}>
-                                        {authState.user!.email}
+                                        {authState?.user?.email}
                                     </Text>
                                     <Spacer />
-                                    <CartButton />
+                                    {/* <Link href='/cart/' asChild>
+                                        <Pressable>
+                                            <CartButton />
+                                        </Pressable>
+                                    </Link> */}
                                     <Spacer />
                                     <OutlinedButton
                                         text={Strings.logout}
@@ -60,11 +64,10 @@ export const AppLayout = () => {
                                         }} />
                                 </View>
                             )
-                        }}
-                    />
-                )
-                    : (<Stack.Screen name={Strings.connection} component={Connection} />)
+                        }} />
+                    : <Stack.Screen name={Strings.connection} component={Connection} />
             }
+            <Stack.Screen name={Strings.cart} component={Cart} />
         </Stack.Navigator>
     )
 };

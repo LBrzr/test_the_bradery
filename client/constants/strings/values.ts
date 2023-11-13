@@ -13,4 +13,5 @@ export default {
   welcomeBack: "Bienvenu ",
   currency: " €",
   addToCart: "Ajouter au panier",
+  cart: "Panier",
 };
