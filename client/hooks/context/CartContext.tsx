@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { addToCart, emptyCart, loadCart, removeFromCart } from '../../services/cart';
+import Cart from '../../types/cart';
 
 
 interface CartProps {
@@ -8,6 +9,7 @@ interface CartProps {
     onAddToCart?: (product: Product) => Promise<any>;
     onRemoveFromCart?: (product: Product) => Promise<any>;
     onEmptyCart?: () => Promise<any>;
+    onRefreshCart?: () => Promise<any>;
 }
 
 const CartContext = createContext<CartProps>({});
@@ -16,33 +18,53 @@ export const useCart = () => {
     return useContext(CartContext);
 }
 
+interface CartConsumerProps {
+    builder: (cart: CartProps | null) => React.JSX.Element;
+}
+
+export const CartConsumer = (props: CartConsumerProps) => {
+    return <CartContext.Consumer>{cart => props.builder(cart)}</CartContext.Consumer>;
+}
+
 export const CartProvider = ({ children }: any) => {
     const [cart, setCart] = useState<Cart>();
 
-    useEffect(() => {
+    const onRefreshCart = () => {
         loadCart().then(result => {
             if (result.error) {
 
             } else {
-                setCart(result.data!)
+                setCart(result.data!);
             }
         });
-    }, []);
+    };
+
+    useEffect(onRefreshCart, []);
 
     const value: CartProps = {
         cart,
         onAddToCart: async (product: Product) => {
             const result = await addToCart(product._id);
-            return result.data;
+            if (result.error) {
+            } else {
+                setCart(result.data!);
+            }
         },
         onRemoveFromCart: async (product: Product) => {
             const result = await removeFromCart(product._id);
-            return result.data;
+            if (result.error) {
+            } else {
+                setCart(result.data!);
+            }
         },
         onEmptyCart: async () => {
             const result = await emptyCart();
-            return result.data;
+            if (result.error) {
+            } else {
+                setCart(result.data!);
+            }
         },
+        onRefreshCart: async () => onRefreshCart(),
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>

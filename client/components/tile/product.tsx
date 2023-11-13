@@ -5,10 +5,14 @@ import { Text, View } from '../../components/Themed';
 import { values as Strings } from '../../constants/strings';
 import { OutlinedButton } from '../button';
 
-interface ProductTileProps { product: Product }
+interface ProductTileProps {
+    product: Product,
+    addToCart?: () => Promise<any>,
+    removeToCart?: () => Promise<any>,
+}
 
 export default function ProductTile(props: ProductTileProps) {
-    const { product } = props;
+    const { product, addToCart, removeToCart } = props;
     return (
         <ImageBackground
             style={{ height: '100%', width: '100%' }}
@@ -31,7 +35,15 @@ export default function ProductTile(props: ProductTileProps) {
                         <Text style={Styles.subtitleText}>{product.name}</Text>
                         <Text>{product.price + Strings.currency}</Text>
                     </View>
-                    <OutlinedButton active={product.inventory > 0} text={Strings.addToCart} onTap={async () => { }} />
+                    {
+                        addToCart
+                            ? <OutlinedButton
+                                active={product.inventory > 0}
+                                text={Strings.addToCart}
+                                onTap={addToCart}
+                            />
+                            : <View />
+                    }
                 </View>
             </View>
         </ImageBackground>

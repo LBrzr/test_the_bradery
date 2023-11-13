@@ -13,7 +13,9 @@ export default function StaggeredList<T>(props: StaggeredListProps<T>) {
     const { builder, items } = props;
     var index = -1;
     return (
-        <ScrollView style={[Styles.page, Styles.container]}>
+        <ScrollView style={[Styles.page, Styles.container, {
+            height: '100%',
+        }]}>
             {chunkArray(items, 3).map(chunk => {
                 const [item0, item1, item2] = chunk;
                 return <View key={index++}

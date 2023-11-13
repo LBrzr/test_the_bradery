@@ -12,21 +12,23 @@ import { Text, View } from '../components/Themed';
 import Styles from '../constants/Styles';
 import Spacer from '../components/Spacer';
 import Colors from '../constants/Colors';
-import { CartProvider } from '../hooks/context/CartContext';
+import { CartProvider, useCart } from '../hooks/context/CartContext';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
     return (
         <AuthProvider>
-            <Layout></Layout>
+            <CartProvider>
+                <AppLayout />
+            </CartProvider>
         </AuthProvider>
     )
 };
 
 export default App;
 
-export const Layout = () => {
+export const AppLayout = () => {
     const { authState, onLogout } = userAuth();
     return (
         <Stack.Navigator>
@@ -35,6 +37,7 @@ export const Layout = () => {
                     <Stack.Screen
                         name={Strings.appName} component={Home}
                         options={{
+                            // headerShown: false,
                             headerStyle: {
                                 backgroundColor: Colors.light.containerBackground,
                             },
@@ -48,9 +51,7 @@ export const Layout = () => {
                                         {authState.user!.email}
                                     </Text>
                                     <Spacer />
-                                    <CartProvider>
-                                        <CartButton onTap={async () => { }} />
-                                    </CartProvider>
+                                    <CartButton />
                                     <Spacer />
                                     <OutlinedButton
                                         text={Strings.logout}

@@ -22,8 +22,22 @@ const addToCartController = async (req, res) => {
     try {
         const { product } = req.body;
         const cart = await getUserCart(req.user);
-        cart.lines.add(product);
-        cart.save();
+        console.log(cart.lines, ': lines');
+        var cLine;
+        for (let i in cart.lines) {
+            const line = cart.lines[i];
+            console.log(line, ': line');
+            if (line.product._id == product) {
+                cLine = line;
+                break;
+            }
+        }
+        if (cLine) {
+            cLine.count++;
+        } else {
+            cart.lines.push({ product, count: 1 });
+        }
+        await cart.save();
         return res.status(200).json(cart).end();
     } catch (error) {
         console.log(error);
@@ -36,7 +50,7 @@ const removeFromCartController = async (req, res) => {
         const product = req.params.prodId;
         const cart = await getUserCart(req.user);
         cart.lines.remove(product);
-        cart.save();
+        await cart.save();
         return res.status(200).json(cart).end();
     } catch (error) {
         console.log(error);
@@ -48,7 +62,7 @@ const emptyCartController = async (req, res) => {
     try {
         const cart = await getUserCart(req.user);
         cart.lines = [];
-        cart.save();
+        await cart.save();
         return res.status(200).json(cart).end();
     } catch (error) {
         console.log(error);
