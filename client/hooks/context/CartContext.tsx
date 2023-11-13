@@ -66,7 +66,13 @@ export const CartProvider = ({ children }: any) => {
             }
         },
         onRefreshCart: async () => onRefreshCart(),
-        onPlaceOrder: placeOrder,
+        onPlaceOrder: async () => {
+            const result = await placeOrder();
+            if (result.error) {
+            } else {
+                setCart(result.data!);
+            }
+        },
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
