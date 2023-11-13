@@ -15,7 +15,7 @@ class Cart {
   get size() {
     return this.lines
       .map((line) => line.count)
-      .reduce((prev, next) => prev + next);
+      .reduce((prev, next) => prev + next, 0);
   }
 }
 
