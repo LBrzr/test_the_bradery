@@ -10,8 +10,8 @@ const express = require('express');
 const router = express.Router();
 
 router.get("", isAuthenticated, cartController);
-router.get("/add", isAuthenticated, addToCartController);
-router.get("/remove", isAuthenticated, removeFromCartController);
-router.get("/empty", isAuthenticated, emptyCartController);
+router.post("/add", isAuthenticated, addToCartController);
+router.delete("/remove", isAuthenticated, removeFromCartController);
+router.delete("/empty", isAuthenticated, emptyCartController);
 
 module.exports = router;
