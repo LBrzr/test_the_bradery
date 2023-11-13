@@ -12,6 +12,6 @@ export default {
   products: productBase + "list/",
   cart: cartBase,
   addToCart: cartBase + "add/",
-  removeFromCart: cartBase + "remove/",
+  removeFromCart: cartBase + "remove/product/",
   emptyCart: cartBase + "empty/",
 };

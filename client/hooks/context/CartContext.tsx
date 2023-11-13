@@ -1,71 +1,49 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { registerUser, logUserIn, logUserOut, loadToken } from '../../services/auth';
+import { addToCart, emptyCart, loadCart, removeFromCart } from '../../services/cart';
 
-interface AuthState {
-    user?: User,
-    authenticated?: boolean,
-};
 
-interface AuthProps<T> {
-    authState?: AuthState;
-    onRegister?: (email: string, password: string) => Promise<T | null>;
-    onLogin?: (email: string, password: string) => Promise<T | null>;
-    onLogout?: () => Promise<any>;
+interface CartProps {
+    cart?: Cart;
+    onAddToCart?: (product: Product) => Promise<any>;
+    onRemoveFromCart?: (product: Product) => Promise<any>;
+    onEmptyCart?: () => Promise<any>;
 }
 
-interface AuthResult { error: boolean, msg?: string }
+const CartContext = createContext<CartProps>({});
 
-const AuthContext = createContext<AuthProps<AuthResult>>({});
-
-export const userAuth = () => {
-    return useContext(AuthContext);
+export const useCart = () => {
+    return useContext(CartContext);
 }
 
-export const AuthProvider = ({ children }: any) => {
-    const [authState, setAuthState] = useState<AuthState>({});
+export const CartProvider = ({ children }: any) => {
+    const [cart, setCart] = useState<Cart>();
 
     useEffect(() => {
-        loadToken().then(result => {
+        loadCart().then(result => {
             if (result.error) {
 
             } else {
-                setAuthState({
-                    user: result.data!,
-                    authenticated: true,
-                })
+                setCart(result.data!)
             }
         });
     }, []);
 
-    const value: AuthProps<AuthResult> = {
-        authState,
-        onRegister: async (email: string, password: string) => {
-            const result = await registerUser(email, password);
-            return { error: result.error, msg: result.msg };
+    const value: CartProps = {
+        cart,
+        onAddToCart: async (product: Product) => {
+            const result = await addToCart(product._id);
+            return result.data;
         },
-        onLogin: async (email: string, password: string) => {
-            const result = await logUserIn(email, password);
-            if (result.error) {
-
-            } else {
-                setAuthState({
-                    user: result.data!,
-                    authenticated: true,
-                })
-            }
-            return { error: result.error, msg: result.msg };
+        onRemoveFromCart: async (product: Product) => {
+            const result = await removeFromCart(product._id);
+            return result.data;
         },
-        onLogout: async () => {
-            const result = await logUserOut();
-            if (result.error) {
-
-            } else {
-                setAuthState({ authenticated: false })
-            }
-            return { error: result.error, msg: result.msg };
+        onEmptyCart: async () => {
+            const result = await emptyCart();
+            return result.data;
         },
     };
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 };

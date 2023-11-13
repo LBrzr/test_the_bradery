@@ -7,11 +7,12 @@ import Home from './home';
 import Connection from './conection';
 
 import { values as Strings } from '../constants/strings';
-import { OutlinedButton } from '../components/button';
+import { CartButton, OutlinedButton } from '../components/button';
 import { Text, View } from '../components/Themed';
 import Styles from '../constants/Styles';
 import Spacer from '../components/Spacer';
 import Colors from '../constants/Colors';
+import { CartProvider } from '../hooks/context/CartContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,10 @@ export const Layout = () => {
                                     <Text style={[Styles.subtitleText, Styles.center]}>
                                         {authState.user!.email}
                                     </Text>
+                                    <Spacer />
+                                    <CartProvider>
+                                        <CartButton onTap={async () => { }} />
+                                    </CartProvider>
                                     <Spacer />
                                     <OutlinedButton
                                         text={Strings.logout}

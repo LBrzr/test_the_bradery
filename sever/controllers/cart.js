@@ -4,7 +4,6 @@ const getUserCart = async (user) => {
     var cart = await CartModel.findOne({ user });
     if (!cart) {
         cart = CartModel.create({ user, lines: [] });
-        cart.save();
     }
     return cart;
 }
@@ -34,7 +33,7 @@ const addToCartController = async (req, res) => {
 
 const removeFromCartController = async (req, res) => {
     try {
-        const { product } = req.body;
+        const product = req.params.prodId;
         const cart = await getUserCart(req.user);
         cart.lines.remove(product);
         cart.save();

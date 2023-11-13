@@ -7,7 +7,7 @@ const CartLineSchema = new Schema({
 
 const CartSchema = new Schema({
     user: { type: Types.ObjectId, ref: 'User' },
-    lines: { type: CartLineSchema },
+    lines: [CartLineSchema],
 });
 
 const CartModel = model('Cart', CartSchema);
